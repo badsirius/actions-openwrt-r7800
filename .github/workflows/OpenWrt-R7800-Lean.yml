@@ -128,8 +128,8 @@ jobs:
         make defconfig
 
     # SSH连接
-    - name: SSH connection to Actions
-      uses: P3TERX/debugger-action@main
+    - name: Debugging with tmate SSH
+      uses: csexton/debugger-action@master
       if: env.SSH_ACTIONS == 'true' || contains(github.event.action, 'ssh')
 
     # 下载软件包

@@ -10,12 +10,12 @@ name: OpenWrt-R7800-Lean
 
 on:
 # 定时触发
-  schedule:
-    - cron: 0 1 * * *
+#  schedule:
+#    - cron: 0 1 * * *
 
-# Release 发布触发
-#  release:
-#    types: [published]
+ Release 发布触发
+  release:
+    types: [published]
 
 # 点赞触发
 #  watch:
@@ -36,17 +36,17 @@ env:
   # 脚本
   DIY_SH: OpenWrt-R7800-Lean.sh
   # 开启SSH连接
-  SSH_ACTIONS: false
+  SSH_ACTIONS: true
   # 上传分支
   UPLOAD_BRANCH: true
   # 分支
   BRANCH: R7800-Lean
   # Github 用户名
-  GITHUB_USER_NAME: ClayMoreBoy
+  GITHUB_USER_NAME: badsirius
   # Github 邮箱
   GITHUB_USER_EMAIL: ${{ secrets.EMAIL }}
   # Github
-  GITHUB: github.com/ClayMoreBoy/OpenWrt-Actions-R7800.git
+  GITHUB: github.com/badsirius/actions-openwrt-r7800.git
   # 上传固件
   UPLOAD_FIRMWARE: true
   # 上传到奶牛快传
@@ -54,7 +54,7 @@ env:
   # 创建+上传发布
   CREATE_RELEASE: true
   # 编译者
-  BUILD_USER: ClayMoreBoy
+  BUILD_USER: badsirius
   # 微信通知
   SEND_WECHAT_MSG: false
 

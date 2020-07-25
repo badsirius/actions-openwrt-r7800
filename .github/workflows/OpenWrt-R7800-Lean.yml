@@ -13,7 +13,7 @@ on:
 #  schedule:
 #    - cron: 0 1 * * *
 
- Release 发布触发
+ #Release 发布触发
   release:
     types: [published]
 

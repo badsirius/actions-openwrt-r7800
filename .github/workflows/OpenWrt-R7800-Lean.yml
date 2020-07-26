@@ -36,7 +36,7 @@ env:
   # 脚本
   DIY_SH: OpenWrt-R7800-Lean.sh
   # 开启SSH连接
-  SSH_ACTIONS: true
+  SSH_ACTIONS: false
   # 上传分支
   UPLOAD_BRANCH: true
   # 分支

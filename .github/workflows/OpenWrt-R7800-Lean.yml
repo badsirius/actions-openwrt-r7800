@@ -47,6 +47,8 @@ env:
   GITHUB_USER_EMAIL: ${{ secrets.EMAIL }}
   # Github
   GITHUB: github.com/badsirius/actions-openwrt-r7800.git
+  # 上传BIN所有内容
+  UPLOAD_BIN_DIR: true
   # 上传固件
   UPLOAD_FIRMWARE: true
   # 上传到奶牛快传
@@ -161,13 +163,17 @@ jobs:
           rm -rf *.manifest
           rm -rf *.seed
           rm -rf *.buildinfo
-          cd openwrt/bin
+          cd /home/runner/work/actions-openwrt-r7800/actions-openwrt-r7800/openwrt/bin
           git init
           git config user.name $GITHUB_USER_NAME
           git config user.email $GITHUB_USER_EMAIL
           git add .
           git commit -m "Update OpenWrt_"$BRANCH
           git push --force --quiet https://${{ secrets.RELEASE_TOKEN }}@$GITHUB HEAD:OpenWrt-$BRANCH
+    
+    # 整理bin文件
+    
+    
     
     # 整理文件
     - name: Organize Files

@@ -184,15 +184,21 @@ jobs:
         rm -rf *.seed
         rm -rf *.buildinfo
         rm -rf *.tar.xz
+        cd ../../..
+        zip r7800-all-bins.zip ./*
+        mkdir upload
+        cd upload
+        echo "::set-env name=BIN::$PWD"
         echo "::set-output name=status::success"
         
     # 上传 Bin 文件夹    
-    - name: Upload bin directory
-      uses: actions/upload-artifact@main
-      if: steps.organize4binfiles.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true' && !cancelled()
-      with:
-        name: R7800_OpenWrt_bin${{ env.DATE }}
-        path: openwrt/bin
+    - name: Upload all-bin To CowTransfer
+      if: steps.organize4binfiles.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
+      run: |
+        curl -fsSL git.io/file-transfer | sh
+        ./transfer cow --block 2621440 -s -p 99 -t 3 --hash --no-progress ${BIN} 2>&1 | tee cowtransfer.log
+        echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
+        echo "::set-env name=IPK_URL::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
 
     # 整理文件
     - name: Organize Files
@@ -200,6 +206,7 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         mv openwrt/.config openwrt/bin/targets/*/*
+        mv openwrt/bin/upload/*.zip openwrt/bin/targets/*/*
         cd openwrt/bin/targets/*/*
         rm -rf packages
         rm -rf *uImage
@@ -261,6 +268,8 @@ jobs:
             🚀 Auto build | 自动编译
             🔗 [Cowtransfer | 奶牛快传](${{ env.COWTRANSFER_URL }}) 
             🔗 [WeTransfer](${{ env.WETRANSFER_URL }})       
+            🚀 ALL IPK | 本固件编译的ipk
+            🔗 [Cowtransfer | 奶牛快传](${{ env.IPK_URL }}) 
             当前使用版本:（编译前的最后一次大雕源码更新记录）            
             ${{ env.useVersionInfo }}
             ${{ github.event.commits[0].message }}

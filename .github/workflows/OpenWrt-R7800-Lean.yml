@@ -14,17 +14,17 @@ on:
 #    - cron: 0 1 * * *
 
  #Release 发布触发
-  release:
-    types: [published]
+ # release:
+ #   types: [published]
 
 # 点赞触发
 #  watch:
 #    types: [started]
 
 # 编辑触发
-#  push:
-#    branches: 
-#       - master
+  push:
+    branches: 
+       - master
 
 env:
   # 源

@@ -38,7 +38,7 @@ env:
   # 开启SSH连接
   SSH_ACTIONS: false
   # 上传分支
-  UPLOAD_BRANCH: true
+  UPLOAD_BRANCH: false
   # 分支
   BRANCH: R7800-Lean
   # Github 用户名
@@ -163,6 +163,7 @@ jobs:
           rm -rf *.manifest
           rm -rf *.seed
           rm -rf *.buildinfo
+          rm -rf *.tar.xz
           cd /home/runner/work/actions-openwrt-r7800/actions-openwrt-r7800/openwrt/bin
           git init
           git config user.name $GITHUB_USER_NAME
@@ -171,10 +172,28 @@ jobs:
           git commit -m "Update OpenWrt_"$BRANCH
           git push --force --quiet https://${{ secrets.RELEASE_TOKEN }}@$GITHUB HEAD:OpenWrt-$BRANCH
     
+    
     # 整理bin文件
-    
-    
-    
+    - name: Organize Bin Files 
+      id: organize4binfiles
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true' && !cancelled()
+      run: |
+        cd openwrt/bin/targets/*/*
+        rm -rf *uImage
+        rm -rf *.manifest
+        rm -rf *.seed
+        rm -rf *.buildinfo
+        rm -rf *.tar.xz
+        echo "::set-output name=status::success"
+        
+    # 上传 Bin 文件夹    
+    - name: Upload bin directory
+      uses: actions/upload-artifact@main
+      if: steps.organize4binfiles.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true' && !cancelled()
+      with:
+        name: R7800_OpenWrt_bin${{ env.DATE }}
+        path: openwrt/bin
+
     # 整理文件
     - name: Organize Files
       id: organize
@@ -187,6 +206,7 @@ jobs:
         rm -rf *.manifest
         rm -rf *.seed
         rm -rf *.buildinfo
+        rm -rf *.tar.xz
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
     

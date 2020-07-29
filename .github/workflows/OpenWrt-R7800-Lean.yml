@@ -185,7 +185,7 @@ jobs:
         rm -rf *.buildinfo
         rm -rf *.tar.xz
         cd ../../..
-        zip r7800-all-bins.zip ./*
+        zip -r r7800-all-bins.zip *
         mkdir upload
         mv r7800-all-bins.zip ./upload
         cd upload

@@ -1654,7 +1654,7 @@ CONFIG_PACKAGE_usign=y
 # CONFIG_PACKAGE_zabbix-agentd is not set
 
 #
-# SSL support
+# SSL support is
 #
 # CONFIG_ZABBIX_OPENSSL is not set
 # CONFIG_ZABBIX_GNUTLS is not set
